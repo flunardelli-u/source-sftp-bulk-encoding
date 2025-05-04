@@ -7,13 +7,13 @@ data:
   connectorSubtype: file
   connectorType: source
   definitionId: 31e3242f-dee7-4cdc-a4b8-8e06c5458517
-  dockerImageTag: 1.7.5
-  dockerRepository: airbyte/source-sftp-bulk-encoding
+  dockerImageTag: 1.7.8
+  dockerRepository: airbyte/source-sftp-bulk
   documentationUrl: https://docs.airbyte.com/integrations/sources/sftp-bulk
   githubIssueLabel: source-sftp-bulk-encoding
   icon: sftp.svg
   license: MIT
-  name: SFTP Bulk
+  name: SFTP Bulk Encoding
   remoteRegistries:
     pypi:
       enabled: true
@@ -44,14 +44,14 @@ data:
     - suite: unitTests
     - suite: integrationTests
       testSecrets:
-        - name: SECRET_SOURCE-SFTP-BULK-ENCODING__CREDS
+        - name: SECRET_SOURCE-SFTP-BULK__CREDS
           fileName: config.json
           secretStore:
             type: GSM
             alias: airbyte-connector-testing-secret-store
     - suite: acceptanceTests
       testSecrets:
-        - name: SECRET_SOURCE-SFTP-BULK-ENCODING__CREDS
+        - name: SECRET_SOURCE-SFTP-BULK__CREDS
           fileName: config.json
           secretStore:
             type: GSM

@@ -73,8 +73,12 @@ class SourceSFTPBulkStreamReader(AbstractFileBasedStreamReader):
             current_dir = directories.pop()
             try:
                 items = self.sftp_client.sftp_connection.listdir_attr(current_dir)
+            except OSError as e:
+                logger.info("Socket closed. Retrying")
+                self._reconnect_sftp_client()
+                items = self.sftp_client.sftp_connection.listdir_attr(current_dir)
             except Exception as e:
-                logger.warning(f"Failed to list files in directory: {e}")
+                logger.warning(f"Failed to list files in directory {current_dir}: {e}")
                 continue
 
             for item in items:
@@ -180,3 +184,13 @@ class SourceSFTPBulkStreamReader(AbstractFileBasedStreamReader):
     def file_size(self, file: RemoteFile):
         file_size = self.sftp_client.sftp_connection.stat(file.uri).st_size
         return file_size
+
+    def upload(self, file, local_directory, logger):
+        """
+        Minimal implementation to satisfy the abstract base class. Implement this method as needed.
+        """
+        raise NotImplementedError("The upload method is not implemented for SourceSFTPBulkStreamReader.")
+
+    def _reconnect_sftp_client(self):
+        # Force re-creation of the SFTP client
+        self._sftp_client = None
